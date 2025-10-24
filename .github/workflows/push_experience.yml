@@ -21,6 +21,6 @@ jobs:
         run: pip install requests
 
       - name: Run Pushbullet script
-        run: python experience_pushbullet.py
+        run: python GB_experience_pushbullet.py
         env:
           PUSHBULLET_TOKEN: ${{ secrets.PUSHBULLET_TOKEN }}
