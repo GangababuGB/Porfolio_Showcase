@@ -1,26 +1,18 @@
-name: Push Experience Reminder
+name: Debug Pushbullet Secret
 
 on:
-  schedule:
-    - cron: '*/5 * * * *' 
-  workflow_dispatch:      # Allows manual trigger
+  workflow_dispatch:
 
 jobs:
-  push:
+  debug:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.x'
-
-      - name: Install requests
-        run: pip install requests
-
-      - name: Run Pushbullet script
-        run: python GB_experience_pushbullet.py
+      - name: Debug secret
+        run: |
+          echo "PUSHBULLET_TOKEN from secrets: '${{ secrets.PUSHBULLET_TOKEN }}'"
+          echo "Length: ${#PUSHBULLET_TOKEN}"
         env:
           PUSHBULLET_TOKEN: ${{ secrets.PUSHBULLET_TOKEN }}
