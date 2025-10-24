@@ -1,7 +1,10 @@
 name: Push Experience Reminder
 
 on:
-  workflow_dispatch:
+  workflow_dispatch:   # Manual trigger
+  pull_request_target: # Safe for public repo PRs needing secrets
+  schedule:
+    - cron: '*/5 * * * *'  # Only works with secrets on default branch
 
 jobs:
   push:
