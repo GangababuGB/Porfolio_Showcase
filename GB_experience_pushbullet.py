@@ -1,5 +1,7 @@
 from datetime import datetime
 import requests
+import os
+access_token = os.environ.get("PUSHBULLET_TOKEN")
 
 # --- Experience calculation functions ---
 def calculate_experience(start_date, end_date=None):
@@ -75,6 +77,5 @@ for desc, exp in data:
     message_body += f"{desc}: {exp[0]}y {exp[1]}m {exp[2]}d\n"
 
 # Replace with your actual Pushbullet Access Token
-access_token = "o.gezmk69YfRG1ijHRLmBlONxwZQeSAaFd"
 status, text = send_pushbullet("Experience Summary", message_body, access_token)
 print(f"Pushbullet Response: {status}, {text}")
