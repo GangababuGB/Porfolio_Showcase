@@ -1,5 +1,6 @@
 name: Push Experience Reminder
- 
+env:
+  PUSHBULLET_TOKEN: ${{ secrets.PUSHBULLET_TOKEN }}
 on:
   schedule:
     - cron: '*/5 * * * *' 
