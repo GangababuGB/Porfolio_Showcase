@@ -51,10 +51,10 @@ exp3 = add_experience(roadmap_it + nuvento)
 overall_exp = add_experience(tata_comm + roadmap_it + nuvento)
 
 data = [
-    ("Exclude Non-IT (Tata Communication)", exp1),
-    ("Include Career Transition (Great Learning + Road Map IT + Nuvento)", exp2),
-    ("Relevant Experience (Road Map IT + Nuvento)", exp3),
-    ("Overall Experience (Tata + IT roles, excluding Great Learning)", overall_exp)
+    ("❌ Exclude Non-IT (Tata Communication)", exp1),
+    ("🔄 Include Career Transition (Great Learning + Road Map IT + Nuvento)", exp2),
+    ("💼 Relevant Experience (Road Map IT + Nuvento)", exp3),
+    ("🌟 Overall Experience (Tata + IT roles, excluding Great Learning)", overall_exp)
 ]
 
 # --- Pushbullet function ---
