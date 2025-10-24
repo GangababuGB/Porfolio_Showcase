@@ -1,32 +1,59 @@
 name: Push Experience Reminder
 
 on:
-  workflow_dispatch:       # manual trigger
-  pull_request_target:     # safe for PRs in public repo
-  push:
+  workflow_dispatch:        # manual trigger (SAFE: has full secret access)
+  pull_request_target:      # safe for PRs in public repo (but blocks secrets from forks for security)
+  push:                     # push to main branch (SAFE: has full secret access)
     branches:
       - main
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: '*/5 * * * *'   # scheduled runs (SAFE: has full secret access)
 
 jobs:
   push:
     runs-on: ubuntu-latest
+    
+    # ⚠️ SECURITY FIX: Use an 'if' condition to ensure the steps that use a secret
+    # only run when secrets are guaranteed to be available and safe to use.
+    # This excludes runs triggered by pull_request_target/pull_request from forks.
+    # Note: For pull_request_target, this check is often sufficient, but explicitly 
+    # checking event names is the safest practice for secret use.
+    if: |
+      github.event_name == 'push' || 
+      github.event_name == 'schedule' || 
+      github.event_name == 'workflow_dispatch' || 
+      github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.full_name == github.repository # Only allow PRT from the same repo
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
       - name: Install requests
         run: pip install requests
 
-      - name: Debug secret
+      # ------------------------------------------------------------------
+      # Debug Step: Useful for troubleshooting (The secret value is masked
+      # in logs, but the length can confirm it's being passed)
+      # ------------------------------------------------------------------
+      - name: Debug Secret Access
+        # Ensure this step ONLY runs if the job is running on a safe event
         env:
           PUSHBULLET_TOKEN: ${{ secrets.PUSHBULLET_TOKEN }}
         run: |
+          echo "GitHub Event: ${{ github.event_name }}"
           echo "PUSHBULLET_TOKEN length: ${#PUSHBULLET_TOKEN}"
+          # If the length is 0, the secret is not available.
 
+      # ------------------------------------------------------------------
+      # Main Script Step
+      # ------------------------------------------------------------------
       - name: Run Pushbullet script
         env:
-          PUSHBULLET_TOKEN: ${{ secrets.PUSHBULLET_TOKEN }}
+          PUSHBULLET_TOKEN: ${{ secrets.PUSHBULLET_TOKEN }} # Passes the secret as an environment variable
         run: |
           python GB_experience_pushbullet.py
