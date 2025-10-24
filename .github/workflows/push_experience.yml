@@ -24,3 +24,19 @@ jobs:
 
       - name: Run Pushbullet script
         run: echo "Running Pushbullet script" && python GB_experience_pushbullet.py
+
+      - name: Create GitHub Mobile Notification
+        uses: peter-evans/create-issue@v5
+        with:
+          title: "📌 Experience Summary Update"
+          body: |
+            Hello @GangababuGB 👋
+
+            ❌ Exclude Non-IT (Tata Communication): $exp1
+
+            🔄 Include Career Transition (Great Learning + Road Map IT + Nuvento): $exp2
+
+            💼 Relevant Experience (Road Map IT + Nuvento): $exp3
+
+            🌟 Overall Experience (Tata + IT roles, excluding Great Learning): $overall_exp
+          labels: "experience-update"
