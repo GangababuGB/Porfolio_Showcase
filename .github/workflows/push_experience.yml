@@ -1,6 +1,7 @@
 name: Push Experience Reminder
 
 on:
+  workflow_dispatch:       # allows manual trigger
   schedule:
     - cron: '*/6 * * * *'  # runs every 5 minutes
 
