@@ -1,27 +1,26 @@
 name: Push Experience Reminder
-env:
-  PUSHBULLET_TOKEN: ${{ secrets.PUSHBULLET_TOKEN }}
+
 on:
   schedule:
-    - cron: '*/5 * * * *' 
-  workflow_dispatch:      # Allows manual trigger
- 
+    - cron: '*/5 * * * *'  # runs every 5 minutes
+  workflow_dispatch:       # allows manual trigger
+
 jobs:
   push:
     runs-on: ubuntu-latest
+    env:
+      PUSHBULLET_TOKEN: ${{ secrets.PUSHBULLET_TOKEN }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
- 
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.x'
- 
+
       - name: Install requests
         run: pip install requests
- 
+
       - name: Run Pushbullet script
-        run: python GB_experience_pushbullet.py
-        env:
-          PUSHBULLET_TOKEN: ${{ secrets.PUSHBULLET_TOKEN }}
+        run: echo "Running Pushbullet script" && python GB_experience_pushbullet.py
